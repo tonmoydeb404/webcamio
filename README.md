@@ -1,50 +1,43 @@
-# React + TypeScript + Vite
+# WebCamio App
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A React-based webcam application with recording capabilities, built using React, TypeScript, TailwindCSS, and react-media-recorder.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **Mute/Unmute**: Toggle microphone audio while recording.
+- **Aspect Ratio**: Adjust video display dimensions for different aspect ratios.
+- **Quality**: Configure video quality settings for optimal performance.
 
-## Expanding the ESLint configuration
+## Tech Stack
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+- **React** (with TypeScript)
+- **TailwindCSS** (for styling)
+- **react-media-recorder** (for media recording)
 
-- Configure the top-level `parserOptions` property like this:
+## Installation
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+1. Clone the repository:
+   ```sh
+   git clone https://github.com/tonmoydeb404/webcamio.git
+   cd webcam-app
+   ```
+2. Install dependencies:
+   ```sh
+   pnpm install
+   ```
+3. Start the development server:
+   ```sh
+   pnpm run dev
+   ```
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+## Usage
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
+1. **Start Recording**: Click the "Start Recording" button to begin.
+2. **Mute/Unmute**: Toggle audio recording using the mute button.
+3. **Adjust Aspect Ratio**: Change aspect ratio settings for different layouts.
+4. **Stop Recording**: Click "Stop Recording" to finish and save the video.
+5. **Download Video**: Export recorded videos for local storage.
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+## Contributing
+
+Contributions are welcome! Feel free to fork this project and submit a pull request.
