@@ -35,9 +35,37 @@
     content="Capture and record high-quality webcam videos with WebCamio. A simple, reliable, and easy-to-use webcam recording solution for all your needs.">
   <meta name="twitter:image" content="https://webcamio.netlify.app/banner.webp">
 
+
+  <style>
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border-width: 0;
+    }
+  </style>
+
 </head>
 
 <body>
+
+  <header class="flex flex-col items-center justify-center w-full min-h-screen sr-only">
+    <img src="https://webcamio.netlify.app/banner.webp" class="max-w-2xl mb-5" />
+    <h1 class="text-gray-900 text-2xl md:text-3xl font-extrabold mb-3 text-center">
+      Effortless Webcam Capture & Recording
+    </h1>
+    <p class="text-gray-700 max-w-3xl text-center mb-10">
+      Record high-quality videos, take snapshots, and share your moments
+      effortlessly—all from your browser. No installs, no hassle. Just click,
+      capture, and create with WebCamio!
+    </p>
+  </header>
+
   <div id="root"></div>
   <script type="module" src="/src/main.tsx"></script>
 </body>
