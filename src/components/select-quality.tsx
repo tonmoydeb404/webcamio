@@ -30,6 +30,7 @@ const SelectQuality = (props: Props) => {
             <CloseButton
               className="flex items-center gap-2 rounded-lg py-2 px-3 transition hover:bg-purple-100 hover:text-purple-600 cursor-pointer"
               onClick={() => setValue(item.value)}
+              key={item.value}
             >
               <FaCheck
                 className={twMerge(

@@ -1,68 +1,70 @@
-// import wasmURL from "@ffmpeg/core/wasm?url";
-// import coreURL from "@ffmpeg/core?url";
-// import { FFmpeg } from "@ffmpeg/ffmpeg";
-// import { fetchFile, toBlobURL } from "@ffmpeg/util";
-// import { useEffect, useRef, useState } from "react";
+import wasmURL from "@ffmpeg/core/wasm?url";
+import coreURL from "@ffmpeg/core?url";
+import { FFmpeg } from "@ffmpeg/ffmpeg";
+import { fetchFile, toBlobURL } from "@ffmpeg/util";
+import { useEffect, useRef, useState } from "react";
 import Button from "../button";
 
-type Props = { videoUrl?: string };
+type Props = { videoUrl?: string; ratio: string };
 
 const Export = (props: Props) => {
-  const { videoUrl } = props;
+  const { videoUrl, ratio } = props;
 
-  // const [loaded, setLoaded] = useState(false);
-  // const ffmpegRef = useRef(new FFmpeg());
+  const [loaded, setLoaded] = useState(false);
+  const ffmpegRef = useRef(new FFmpeg());
 
-  // const load = async () => {
-  //   const ffmpeg = ffmpegRef.current;
-  //   ffmpeg.on("log", ({ message }) => {
-  //     console.log(message);
-  //   });
+  const load = async () => {
+    const ffmpeg = ffmpegRef.current;
+    ffmpeg.on("log", ({ message }) => {
+      console.log(message);
+    });
 
-  //   const isLoaded = await ffmpeg.load({
-  //     coreURL: await toBlobURL(coreURL, "text/javascript"),
-  //     wasmURL: await toBlobURL(wasmURL, "text/javascript"),
-  //   });
+    const isLoaded = await ffmpeg.load({
+      coreURL: await toBlobURL(coreURL, "text/javascript"),
+      wasmURL: await toBlobURL(wasmURL, "text/javascript"),
+    });
 
-  //   console.log({ isLoaded });
+    setLoaded(isLoaded);
+  };
 
-  //   setLoaded(isLoaded);
-  // };
+  const cropVideo = async () => {
+    if (!loaded) {
+      console.error("FFmpeg not loaded");
+      return;
+    }
 
-  // const cropVideo = async () => {
-  //   if (!loaded) {
-  //     console.error("FFmpeg not loaded");
-  //     return;
-  //   }
+    const ffmpeg = ffmpegRef.current;
 
-  //   const ffmpeg = ffmpegRef.current;
+    console.log("Cropping with ratio:", ratio, { videoUrl });
 
-  //   ffmpeg.writeFile("input.mp4", await fetchFile(videoUrl));
+    await ffmpeg.writeFile("input.mp4", await fetchFile(videoUrl));
 
-  //   // Run FFmpeg commands to crop and scale the video
-  //   await ffmpeg.exec([
-  //     "-i",
-  //     "input.mp4",
-  //     "-vf",
-  //     "crop=in_h*9/16:in_h,scale=300:534",
-  //     "output.mp4",
-  //   ]);
+    const [x, y] = ratio.split("/");
 
-  //   const croppedFile = await ffmpeg.readFile("output.mp4");
+    // FFmpeg crop command with correct expression syntax
+    await ffmpeg.exec([
+      "-i",
+      "input.mp4",
+      "-vf",
+      `crop='min(in_w,in_h*${x}/${y})':'min(in_h,in_w*${y}/${x})'`,
+      "output.mp4",
+    ]);
 
-  //   console.log({ croppedFile });
+    const croppedFile = await ffmpeg.readFile("output.mp4");
+    const data = new Uint8Array(croppedFile as unknown as ArrayBuffer);
+    const url = URL.createObjectURL(
+      new Blob([data.buffer], { type: "video/mp4" })
+    );
 
-  //   const data = new Uint8Array(croppedFile as ArrayBuffer);
-  //   const url = URL.createObjectURL(
-  //     new Blob([data.buffer], { type: "video/mp4" })
-  //   );
+    downloadBlob(url, `cropped_${Date.now()}.mp4`);
 
-  //   console.log({ url });
-  // };
+    ffmpeg.deleteFile("input.mp4");
+    ffmpeg.deleteFile("output.mp4");
+  };
 
-  // useEffect(() => {
-  //   load();
-  // }, []);
+  useEffect(() => {
+    load();
+  }, []);
 
   function downloadBlob(blobUrl: string, filename: string) {
     // Create a temporary anchor element
@@ -92,7 +94,7 @@ const Export = (props: Props) => {
     <>
       <Button
         className="bg-purple-500 text-white hover:bg-purple-600"
-        onClick={() => downloadBlob(videoUrl, Date.now().toString())}
+        onClick={cropVideo}
       >
         Export
       </Button>

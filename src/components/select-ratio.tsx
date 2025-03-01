@@ -10,7 +10,7 @@ import { twMerge } from "tailwind-merge";
 import { ratios } from "../constants/ratio";
 import IconBtn from "./icon-btn";
 
-type Props = { value: number; setValue: (v: number) => void };
+type Props = { value: string; setValue: (v: string) => void };
 
 const SelectRatio = (props: Props) => {
   const { value, setValue } = props;
@@ -30,6 +30,7 @@ const SelectRatio = (props: Props) => {
             <CloseButton
               className="flex items-center gap-2 rounded-lg py-2 px-3 transition hover:bg-purple-100 hover:text-purple-600 cursor-pointer"
               onClick={() => setValue(item.value)}
+              key={item.value}
             >
               <FaCheck
                 className={twMerge(
@@ -37,7 +38,7 @@ const SelectRatio = (props: Props) => {
                 )}
               />
               <span>{item.label}</span>
-              <b className="text-xs">{item.valueLabel}</b>
+              <b className="text-xs">{item.value}</b>
             </CloseButton>
           ))}
         </div>

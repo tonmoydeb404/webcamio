@@ -10,7 +10,15 @@ const VideoOutput = (props: Props) => {
     return null;
   }
 
-  return <video ref={videoRef} src={blob} autoPlay controls />;
+  return (
+    <video
+      ref={videoRef}
+      src={blob}
+      autoPlay
+      controls
+      disablePictureInPicture
+    />
+  );
 };
 
 export default VideoOutput;

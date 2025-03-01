@@ -16,7 +16,7 @@ const VideoPreview = (props: Props) => {
     return null;
   }
 
-  return <video ref={videoRef} autoPlay />;
+  return <video ref={videoRef} autoPlay disablePictureInPicture />;
 };
 
 export default VideoPreview;

@@ -15,7 +15,7 @@ import Timer from "./timer";
 
 const RecordView = () => {
   const [layout, setLayout] = useState(720);
-  const [ratio, setRatio] = useState(9 / 16);
+  const [ratio, setRatio] = useState("9/16");
 
   const {
     status,
@@ -30,13 +30,12 @@ const RecordView = () => {
     previewStream,
     resetMediaStream,
   } = useReactMediaRecorder({
-    video: { aspectRatio: ratio, width: layout },
+    video: true,
     askPermissionOnMount: true,
-    mediaRecorderOptions: {},
+    blobPropertyBag: { type: "webm" },
   });
 
   useEffect(() => {
-    console.log({ layout, ratio });
     resetMediaStream();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [layout, ratio]);
@@ -94,11 +93,11 @@ const RecordView = () => {
           </Button>
         )}
 
-        <Export videoUrl={mediaBlobUrl} />
+        <Export videoUrl={mediaBlobUrl} ratio={ratio} />
       </div>
 
       <div
-        className="w-full bg-black mb-16 rounded-xl overflow-hidden [&_video]:w-full [&_video]:h-full [&_video]:object-fill"
+        className="w-full bg-black mb-16 rounded-xl overflow-hidden [&_video]:w-full [&_video]:h-full [&_video]:object-cover"
         style={{ aspectRatio: ratio, maxWidth: getRatio(ratio)?.width }}
       >
         {mediaBlobUrl ? (
